@@ -1,0 +1,34 @@
+{
+  "name": "@atz3n/authentication-protocol-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "test": "npm run test-browser && npm run test-node",
+    "test-node": "jest --testEnvironment=node",
+    "test-browser": "jest --testEnvironment=jsdom",
+    "build": "rm -rf dist && tsc",
+    "test-build-node": "jest --rootDir=dist --testEnvironment=node",
+    "test-build-browser": "jest --rootDir=dist --testEnvironment=jsdom"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atz3n/authentication-protocol-ts.git"
+  },
+  "author": "atz3n",
+  "license": "ISC",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "@somedotone/attestation-protocol-ts": "^1.1.0"
+  }
+}
