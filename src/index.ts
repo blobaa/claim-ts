@@ -1,11 +1,6 @@
-import { entity, GetEntityResponse } from '@somedotone/attestation-protocol-ts'
+import ClaimHandler from './modules/ClaimHandler'
+
+export * from './types'
 
 
-export const func = async(): Promise<GetEntityResponse>  => {
-    return await entity.getEntity('https://testardor.some.one', {
-        account: 'ARDOR-4TGA-X2NT-875X-BH5X5',
-        attestationContext: 'somedotone-attestation-demo',
-        attestor: 'ARDOR-5TT2-VS3T-EUTS-7WDBA'
-    });
-};
-
+export class Claim extends ClaimHandler {};
