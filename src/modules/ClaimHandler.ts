@@ -2,45 +2,95 @@ import Nonce from './lib/Nonce';
 import Helpers from './lib/Helper';
 import { sha256 } from 'js-sha256';
 import utf8 from 'utf8';
-import { IClaim, UserData, PrepareUserDataParams, Hashes } from '../types';
+import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject } from '../types';
 
 
 
-export default class Claim implements IClaim {
+export default class ClaimHandler implements IClaim {
 
-    private userData: UserData[];
-
-
-    constructor(userData: UserData[]) {
-        this.userData = userData;
-    }
+    private userData: UserData[] = [];
 
 
-    public static prepareUserData = (params: PrepareUserDataParams): UserData[] => {
-        let userDataWithNonce: UserData[] = [];
+
+    public prepareUserData = (params: PrepareUserDataParams): UserData[] => {
+        const userDataWithNonce: UserData[] = [];
+        
         params.userData.forEach(userDataObject => {
             userDataWithNonce.push({ name: userDataObject.name, value: userDataObject.value, nonce: Nonce.generate() });
         });
+
         return userDataWithNonce;
     }
 
 
-    public getHashes = (): Hashes => {
-        let leafHashes: string[] = [];
-        
-        this.userData.forEach(userDataObject => {
-            let concatUserData = Helpers.concatObjectValues({ name: userDataObject.name, value: userDataObject.value, nonce: userDataObject.nonce });
-            leafHashes.push(sha256(utf8.encode(concatUserData)));
-        });
+    public setUserData = (userData: UserData[]): void => {
+        this.userData = userData;
+    }
 
 
-        let concatLeafHashes = Helpers.concatArrayElements(leafHashes);
-        const rootHash = sha256(utf8.encode(concatLeafHashes));
-
+    public createHashes = (): Hashes => {
+        const leafHashes = this.createLeafHashes(this.userData);
+        const concatLeafHashes = Helpers.concatArrayElements([ ...leafHashes ]);
+        const rootHash = this.createHash(concatLeafHashes);
 
         return { rootHash, leafHashes };
     }
 
+    private createLeafHashes = (data: UserData[]): string[] => {
+        const leafHashes: string[] = [];
 
+        data.forEach(dataObject => {
+            const concatData = Helpers.concatObjectValues({ name: dataObject.name, value: dataObject.value, nonce: dataObject.nonce });
+            leafHashes.push(this.createHash(concatData));
+        });
+
+        return leafHashes;
+    }
+
+    private createHash = (data: string): string => {
+        return sha256(utf8.encode(data));
+    }
+
+
+    public createClaim = (userDataNames: string[]): ClaimObject => {
+        
+        const claimData = this.getClaimData(userDataNames);
+        const claimDataLeafHashes = this.createLeafHashes(claimData);
+        const userDataHashes = this.createHashes();
+        const claimLeafHashes = this.getClaimLeafHashes(userDataHashes.leafHashes, claimDataLeafHashes);
+
+        const claimObject: ClaimObject = {
+            userData: claimData,
+            hashes: {
+                leafHashes: claimLeafHashes,
+                rootHash: userDataHashes.rootHash
+            }
+        }
+        return claimObject;
+    }
+
+    private getClaimData = (userDataNames: string[]): UserData[] => {
+        const claimData: UserData[] = [];
+
+        userDataNames.forEach(name => {
+            this.userData.forEach(userDataObject => {
+                if(name === userDataObject.name) claimData.push(userDataObject);
+            });
+        });
+
+        return claimData;
+    }
+
+    private getClaimLeafHashes = (userDataLeafHashes: string[], claimDataLeafHashes: string[]): string[] => {
+        return userDataLeafHashes.filter(userDataLeafHash => {
+            let addToClaim = true;
+
+            claimDataLeafHashes.forEach(claimDataLeafHash => {
+                if(userDataLeafHash === claimDataLeafHash) addToClaim = false;
+            });
+
+            return addToClaim;
+        });
+    }
 
 }

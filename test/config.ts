@@ -25,16 +25,16 @@ const config = {
     },
     hashes: {
         apu: {
-            rootHash: '96e3246b0a6be1701ccc65ee74fa7e0c9b05dc72e40f48b9309acbd7d7aa246f',
-            leafHashes: [ 
-                '1675ec7a3d655a6e5aee12d575317e3260931605b48e3ff0b06ac3ce032e18a3',
-                '21e6a6ffaae0d62179ef16eeaada9bcb0b0d9e3d5ffa104375276a2799f5cf75',
-                '24142b5c42622f88c36cc299ea475bbbd75fc1e3fca30d48eb831b2e696a19e9',
-                '81e6c5ce124bbccec7e230ca04e8b134261c0aa8977715c5fe50b9c4cd395366',
-                '941c388490618c4f0869edfb248a09c9f400f44cf80886be57fe2d04fa2fd9e9',
-                'a3e001b07987eae86d31b0d19ce3056797d8dab5fa3d25a8225a6cae115a7cc4',
-                'bc322469148cf7bb642e59ce7dae14dd9eeca30a3104147bf15f9b31a5714f53',
-                'd9966b5488b7cbe00188c2543e2f57b9b726024e5c94735512b55f5c96a23a03' 
+            rootHash: '5f47368e39277425148985e536db82c62dbb63d7dda8e3f14162f2d1164451e2',
+            leafHashes: [
+                '972e13221d48058ee84f27977e0fb07f9c165b3c89f908551680a1507f18f1e6',
+                '5163271fa409a9832c433aa8fe061ead412db677349c296552d2d96a74ab334e',
+                'ac98b6b00cdebf92364bab16531c1c45492dfdf552560cfae76581d2b6698872',
+                'cbc42652198c2bbf4cb35bb6db7ef722e67fb888e62dbae57c61141fb64e6554',
+                'd10e174267e0042ad4c13f95a11fec07350ddf5dfc2aa5b936ff2975672d4c07',
+                '9eb45e4f0acb1ed7a5b431bb5fc548559056be1a81862aba8d6c1a1668aeb85c',
+                '2397c1d583e7ee280c244b12e5aa68b1d4707c225275bd6899c96081e17abf1e',
+                '417a8575d6f1181aba7952146fdda5ec5db41987bd1378965a188d98fe1be28b' 
             ]
         }
     }

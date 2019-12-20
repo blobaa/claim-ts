@@ -12,16 +12,21 @@ export interface UserData {
     nonce: string;
 }
 
-
 export interface Hashes {
     leafHashes: string[];
     rootHash: string;
 }
 
+export interface ClaimObject {
+    userData: UserData[];
+    hashes: Hashes;
+}
+
 
 export interface IClaim {
-    // new (property: string): IClaim;
-    // static prepareUserData: (params: PrepareUserDataParams) => UserData[];  (Unfortunately TypeScript doesn't allow static method declaration in interfaces)
-    getHashes: () => Hashes;
+    prepareUserData: (params: PrepareUserDataParams) => UserData[];
+    createHashes: () => Hashes;
+    setUserData: (userData: UserData[]) => void;
+    createClaim: (userDataNames: string[]) => ClaimObject;
 }
 
