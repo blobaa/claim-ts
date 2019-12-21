@@ -2,7 +2,7 @@ import Nonce from './lib/Nonce';
 import Helpers from './lib/Helper';
 import { sha256 } from 'js-sha256';
 import utf8 from 'utf8';
-import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject } from '../types';
+import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject, SetUserDataParams, CreateClaimParams, VerifyClaimParams } from '../types';
 
 
 
@@ -23,15 +23,14 @@ export default class ClaimHandler implements IClaim {
     }
 
 
-    public setUserData = (userData: UserData[]): void => {
-        this.userData = userData;
+    public setUserData = (params: SetUserDataParams): void => {
+        this.userData = params.userData;
     }
 
 
     public createHashes = (): Hashes => {
         const leafHashes = this.createLeafHashes(this.userData);
-        const concatLeafHashes = Helpers.concatArrayElements([ ...leafHashes ]);
-        const rootHash = this.createHash(concatLeafHashes);
+        const rootHash = this.createRootHash(leafHashes);
 
         return { rootHash, leafHashes };
     }
@@ -51,10 +50,14 @@ export default class ClaimHandler implements IClaim {
         return sha256(utf8.encode(data));
     }
 
+    private createRootHash = (leafHashes: string[]): string => {
+        const concatLeafHashes = Helpers.concatArrayElements([ ...leafHashes ]);
+        return this.createHash(concatLeafHashes);
+    }
 
-    public createClaim = (userDataNames: string[]): ClaimObject => {
-        
-        const claimData = this.getClaimData(userDataNames);
+
+    public createClaim = (params: CreateClaimParams): ClaimObject => {
+        const claimData = this.getClaimData(params.userDataNames);
         const claimDataLeafHashes = this.createLeafHashes(claimData);
         const userDataHashes = this.createHashes();
         const claimLeafHashes = this.getClaimLeafHashes(userDataHashes.leafHashes, claimDataLeafHashes);
@@ -93,4 +96,12 @@ export default class ClaimHandler implements IClaim {
         });
     }
 
+    
+    public verifyClaim = (params: VerifyClaimParams): boolean => {
+        const claimDataLeafHashes = this.createLeafHashes(params.claimObject.userData);
+        const leafHashes = claimDataLeafHashes.concat(params.claimObject.hashes.leafHashes);
+        const rootHash = this.createRootHash(leafHashes);
+
+        return rootHash === params.claimObject.hashes.rootHash;
+    }
 }

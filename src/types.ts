@@ -17,16 +17,29 @@ export interface Hashes {
     rootHash: string;
 }
 
+export interface SetUserDataParams {
+    userData: UserData[];
+}
+
+export interface CreateClaimParams {
+    userDataNames: string[];
+}
+
 export interface ClaimObject {
     userData: UserData[];
     hashes: Hashes;
+}
+
+export interface VerifyClaimParams {
+    claimObject: ClaimObject;
 }
 
 
 export interface IClaim {
     prepareUserData: (params: PrepareUserDataParams) => UserData[];
     createHashes: () => Hashes;
-    setUserData: (userData: UserData[]) => void;
-    createClaim: (userDataNames: string[]) => ClaimObject;
+    setUserData: (params: SetUserDataParams) => void;
+    createClaim: (params: CreateClaimParams) => ClaimObject;
+    verifyClaim: (params: VerifyClaimParams) => boolean;
 }
 
