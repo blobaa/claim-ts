@@ -1,5 +1,5 @@
 {
-  "name": "@atz3n/authentication-protocol-ts",
+  "name": "@project-ap/claim-ts",
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atz3n/authentication-protocol-ts.git"
+    "url": "git+https://github.com/project-ap/claim-ts.git"
   },
   "author": "atz3n",
   "license": "ISC",
@@ -30,7 +30,6 @@
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@somedotone/attestation-protocol-ts": "^1.1.0",
     "js-sha256": "^0.9.0",
     "utf8": "^3.0.0"
   }
