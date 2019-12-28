@@ -8,7 +8,7 @@ describe('Claim module tests', () => {
     test('prepareUserData', () => {
         const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         
-        const params: PrepareUserDataParams = { userData: config.userData.apuUnprepared };
+        const params: PrepareUserDataParams = { unpreparedUserData: config.userData.apuUnprepared };
         const preparedUserData = claim.prepareUserData(params);
         
         expect(preparedUserData[0].nonce.length).toBe(64);

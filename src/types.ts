@@ -3,7 +3,7 @@ export type atomicObject = {[name: string]: string};
 
 
 export interface PrepareUserDataParams {
-    userData: { name: string, value: string}[];
+    unpreparedUserData: { name: string, value: string}[];
 }
 
 export interface UserData { 

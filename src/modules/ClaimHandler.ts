@@ -15,7 +15,7 @@ export default class ClaimHandler implements IClaim {
     public prepareUserData = (params: PrepareUserDataParams): UserData[] => {
         const userDataWithNonce: UserData[] = [];
         
-        params.userData.forEach(userDataObject => {
+        params.unpreparedUserData.forEach(userDataObject => {
             userDataWithNonce.push({ name: userDataObject.name, value: userDataObject.value, nonce: Nonce.generate() });
         });
 
