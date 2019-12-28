@@ -10,6 +10,7 @@ An implementation of the Attestation Protocol [Claim Extension](https://github.c
   - [APIs](#apis)
     - [Claim](#claim)
       - [Claim Registration](#claim-registration)
+      - [Verifiable Claim Creation](#verifiable-claim-creation)
 
 
 ## Install
@@ -72,8 +73,6 @@ The Claim module provides APIs for claim data preparation, claim creation and cl
 - createClaim: (params: CreateClaimParams) => ClaimObject
 - verifyClaim: (params: VerifyClaimParams) => boolean
 ````
-
-
 
 
 #### Claim Registration
@@ -180,6 +179,114 @@ const ClaimRegistration = async () => {
 }
 
 ClaimRegistration();
+````
+
+
+#### Verifiable Claim Creation
+
+````typescript
+import { claim, CreateClaimParams, SetUserDataParams } from '@project-ap/claim-ts';
+import { data, SignDataParams } from '@project-ap/attestation-protocol-ts';
+
+
+const createVerifiableClaimExample = () => {
+
+    /* example claim user data. Forwarded from attestor account (see claim registration) */
+    const userData = [{ 
+            name: 'general:givenName',
+            value: 'apu',
+            nonce: '2LqyL4UHmjNFd2UfykUud7niemEEyUBSfAYvTKMKX6ipM37G6Fk94AtCqlFHJOHr' 
+        },{
+            name: 'general:surName',
+            value: 'nahasapeemapetilon',
+            nonce: 'WNTZLpacUsMYYhfZdmsn2UwvAMay6zcDEgWwSdUYYzNNssvCkmyQVm6jd6ATfmTj'
+        },{
+            name: 'general:nationality',
+            value: 'american',
+            nonce: 'ODUVizex9PEkFG63ZVI7h4Ae6qyj5tYK5iZ9bpOjpHXx1dJhkoLELNHvOOtHIQmq'
+        },{
+            name: 'birth:date',
+            value: '04.02.1942',
+            nonce: '7LqA72Nqw1ONeQNCKUoub6GnnjrjqeX8wCS5UdjyfERMBIpvMbHOhY6FbNUvK3Hr'
+        },{
+            name: 'birth:place',
+            value: 'rahmatpur',
+            nonce: '0rc71Das18a7blLvL2warMpiaw5Q7PsXq8EgEmFBqcDbsZFxmNshRHfbbxuEtEi1'
+        },{
+            name: 'address:city',
+            value: 'springfield',
+            nonce: 'eBaiWBcw4AHaeI5pWcRasvaXJFaP0ApL1vOktdj30wH1fTSBvyHuEmGavtgfDwra'
+        },{
+            name: 'address:zip',
+            value: '422442',
+            nonce: '9WMkXLFFo2xdjkZDJYyMtVUm0YwUtnkireFRBdvHjeldUpue8nYFf6lBojHzrlYB'
+        },{
+            name: 'address:state',
+            value: 'illinois',
+            nonce: 'gI9dDBoOqT2Vt04Hmbi59tsZuvyCSLNfPRmlJxeU4IiZN4FdsIZJEvU9RNyNJa9i'
+        },{
+            name: 'address:countryCode',
+            value: 'us',
+            nonce: 'EnYg7EpDzOSPJM3QVfi0DtKmgwiYX4slAv5zNPmenSXiM5PSPAz03PfNI5C1XEDV'
+        }
+    ];
+
+
+    /*
+     * 1. Step: Select user data to claim
+     */
+
+    const params1: CreateClaimParams = {
+        userDataNames: [
+            'general:nationality',
+            'birth:date'
+        ]
+    };
+
+
+    /*
+     * 2. Step: create claim
+     */
+    
+    const params2: SetUserDataParams = {
+        userData: userData
+    };
+
+    claim.setUserData(params2);
+    const claimObject = claim.createClaim(params1);
+
+    /* the claim object bundles the selected user data along with claim verification information */
+    console.log(claimObject.userData);          // the selected user data
+    console.log(claimObject.hashes.leafHashes)  // user data hashes of not selected user data
+    console.log(claimObject.hashes.rootHash)    // root hash
+    
+
+    /*
+     * 3. Step: sign claim
+     */
+
+    const params3: SignDataParams = {
+        attestationContext: "exampleClaimContext",
+        attestationPath: [                          // [optional] trust chain up to the root account.
+            "ARDOR-ATTE-STOR-ACCO-UNTXX",           // Can be omitted if signed data creator is root account
+            "ARDOR-INTE-RMED-IATE-ACCO2",
+            "ARDOR-ROOT-ACCO-UNTX-XXXXX" 
+        ], 
+        payload: JSON.stringify(claimObject),       // stringified claim object
+        passphrase: "<some passphrase>"             // passphrase of attested account (Apu`s account)
+    };
+
+    const signedClaim = data.signData(params3);
+
+
+    /* the signed claim object is no ready to be shared and verified */
+    console.log(signedClaim);
+
+
+    /* share signed claim object for authentication */
+}
+
+createVerifiableClaimExample();
 ````
 
 
