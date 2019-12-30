@@ -5,7 +5,6 @@ import utf8 from 'utf8';
 import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject, SetUserDataParams, CreateClaimParams, VerifyClaimParams } from '../types';
 
 
-
 export default class ClaimHandler implements IClaim {
 
     private userData: UserData[] = [];

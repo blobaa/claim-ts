@@ -1,7 +1,6 @@
 import { objectAny, atomicObject } from "../../types"
 
 
-
 export default class Helpers {
 
     public static concatObjectValues = (object: atomicObject): string => {
