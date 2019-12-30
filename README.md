@@ -195,7 +195,7 @@ import { claim, CreateClaimParams, SetUserDataParams } from '@project-ap/claim-t
 import { data, SignDataParams } from '@project-ap/attestation-protocol-ts';
 
 
-/* the prepared claim user data forwarded at the claim registration (see Claim Registration) */
+/* the prepared claim user data forwarded at the claim registration process (see Claim Registration) */
 const userData = [{ 
         name: 'general:givenName',
         value: 'apu',
@@ -262,8 +262,8 @@ const verifiableClaimCreationExample = () => {
     const claimObject = claim.createClaim(params1);
 
     /* the claim object bundles the selected user data along with claim verification information */
-    console.log(claimObject.userData);          // the selected user data
-    console.log(claimObject.hashes.leafHashes); // user data hashes of non-selected user data
+    console.log(claimObject.userData);          // selected user data
+    console.log(claimObject.hashes.leafHashes); // hashes of non-selected user data
     console.log(claimObject.hashes.rootHash);   // root hash
     
 
@@ -279,7 +279,7 @@ const verifiableClaimCreationExample = () => {
             "ARDOR-ROOT-ACCO-UNTX-XXXXX" 
         ], 
         payload: JSON.stringify(claimObject),       // stringified claim object
-        passphrase: "<some passphrase>"             // passphrase of attested account (Apu`s account)
+        passphrase: "<some passphrase>"             // passphrase of claim creator account (Apu`s account)
     };
 
     const signedClaim = data.signData(params3);
@@ -300,7 +300,7 @@ import { claim, VerifyClaimParams, ClaimObject } from '@project-ap/claim-ts'
 import { data, VerifySignedDataParams, SignedDataCheckParams, EntityCheckParams, Error, ErrorCode, SignedData } from '@project-ap/attestation-protocol-ts'
 
 
-/* the signed claim created at claim creation (see Verifiable Claim Creation) */
+/* the signed claim created at the claim creation process (see Verifiable Claim Creation) */
 const signedClaim: SignedData = { 
     payload: '{"userData":[{"name":"companyName","value":"kwik-e-mart","nonce":"8wPAju1MAIe1JuD6M652ElqSJHFveTEBg2dkkivsO8s3ur7GmlQGSfFXy8WklDTD"},{"name":"owner-surName","value":"nahasapeemapetilon","nonce":"3YQENM2w8CICDia6Jm6cHYlw1uwK3snFmVpFtDlEeKaTCz5liysNhan51DxY4yQI"}],"hashes":{"leafHashes":["ff7c971c9d2b52c3c2c2a09cb8039c7a1ef03c3c26083b5a5a4f1c28981aa338","4b20c1e27707898daf99b370b245b0847a365fd5111825eebb16c7205a1f864b","e3022a8db31ce1d90a16b04989cfec09ab3e5a61b30e27fd8756dc39cc1cf242"],"rootHash":"d368ad870e3b60be129b22daee320731de707d3b0e1eab5bb9131d992da2577a"}}',
     attestationContext: 'exampleClaimContext',
@@ -321,18 +321,18 @@ const claimVerificationExample = async () => {
 
     const claimCheckCallback = (params: SignedDataCheckParams): boolean => {
         
-        /* parse claim object */
+        /* parse the claim object */
         const claimObject: ClaimObject = JSON.parse(params.signedData.payload);
         
         
         /* get user data */
         console.log(claimObject.userData);
 
-        /* get claim signature time */
+        /* get the claim signature time */
         console.log(new Date(params.creationTime));
 
 
-        /* verify claim */
+        /* verify the claim */
         const params1: VerifyClaimParams = {
             claimObject: claimObject
         };
@@ -345,7 +345,7 @@ const claimVerificationExample = async () => {
         rootHash = claimObject.hashes.rootHash;
 
 
-        return isClaimValid; // verification process stops in case of invalid claim
+        return isClaimValid; // verification process stops in case of an invalid claim
     };
 
 
@@ -355,15 +355,15 @@ const claimVerificationExample = async () => {
     
     let isRootHashAttested = false;
     
-    const claimEntityCheckCb = (entity: EntityCheckParams): boolean => {
+    const claimEntityCheckCallback = (entity: EntityCheckParams): boolean => {
 
-        /* check if root hash is attached to the claim creator account */
+        /* check if the root hash is attached to the claim creator account */
         if(claimCreator === entity.account && rootHash === entity.payload) {
             isRootHashAttested = true;
         }
 
 
-        return isRootHashAttested; // verification process stops in case of unattested root hash
+        return isRootHashAttested; // verification process stops in case of an unattested root hash
     };
 
 
@@ -375,7 +375,7 @@ const claimVerificationExample = async () => {
         trustedRootAccount: "ARDOR-TRUS-TEDR-OOTA-CCOUN", // the trust chain`s root account
         signedData: signedClaim,
         signedDataCheckCallback: claimCheckCallback,
-        entityCheckCallback: claimEntityCheckCb
+        entityCheckCallback: claimEntityCheckCallback
     };
 
     try {
@@ -384,13 +384,13 @@ const claimVerificationExample = async () => {
         const response = await data.verifySignedData("https://testardor.jelurida.com", params, true);
         
 
-        /* if your program reaches the following lines, you have successfully finished the verification. The claim is valid and attested */
+        /* if your program reaches these lines, you have successfully finished the verification process. The claim is valid and attested */
         console.log('claim is ok');
         console.log(response);
 
     } catch (e) { 
 
-        /* if your program reaches the following lines, an error occurred and the verification finished without success. */
+        /* if your program reaches these lines, an error occurred and the verification finished without success. */
         const error = e as Error
 
         switch(error.code) {
