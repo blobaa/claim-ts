@@ -1,5 +1,5 @@
 
-import { claim, PrepareUserDataParams, Claim, SetUserDataParams, UserData, CreateClaimParams, VerifyClaimParams } from '../src/index'
+import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from '../src/index';
 import config from './config';
 
 
