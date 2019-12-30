@@ -1,4 +1,3 @@
-
 import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from '../src/index';
 import config from './config';
 
@@ -21,7 +20,7 @@ describe('Claim module tests', () => {
         const params: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params);
         const hashes = claim.createHashes();
-        
+
         expect(hashes.rootHash).toBe(config.hashes.apu.rootHash);
         expect(JSON.stringify(hashes.leafHashes)).toBe(JSON.stringify(config.hashes.apu.leafHashes));
     });
@@ -34,27 +33,28 @@ describe('Claim module tests', () => {
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'first-name',
-                'birth-date',
-                'country'
+                'general:givenName',
+                'general:nationality',
+                'address:state'
             ]
         };
 
         const claimObject = claim.createClaim(params2);
 
 
-        expect(JSON.stringify(claimObject.userData[0])).toBe(JSON.stringify(config.userData.apu[0])); // first-name
-        expect(JSON.stringify(claimObject.userData[1])).toBe(JSON.stringify(config.userData.apu[2])); // bith-date
-        expect(JSON.stringify(claimObject.userData[2])).toBe(JSON.stringify(config.userData.apu[7])); // country
+        expect(JSON.stringify(claimObject.userData[0])).toBe(JSON.stringify(config.userData.apu[0])); // general:givenName
+        expect(JSON.stringify(claimObject.userData[1])).toBe(JSON.stringify(config.userData.apu[2])); // general:nationality
+        expect(JSON.stringify(claimObject.userData[2])).toBe(JSON.stringify(config.userData.apu[7])); // address:state
         
         expect(claimObject.hashes.rootHash).toBe(config.hashes.apu.rootHash);
-        expect(claimObject.hashes.leafHashes.length).toBe(5);
+        expect(claimObject.hashes.leafHashes.length).toBe(6);
 
-        expect(claimObject.hashes.leafHashes[0]).toBe(config.hashes.apu.leafHashes[1]); // sur-name
-        expect(claimObject.hashes.leafHashes[1]).toBe(config.hashes.apu.leafHashes[3]); // street
-        expect(claimObject.hashes.leafHashes[2]).toBe(config.hashes.apu.leafHashes[4]); // street-number
-        expect(claimObject.hashes.leafHashes[3]).toBe(config.hashes.apu.leafHashes[5]); // city
-        expect(claimObject.hashes.leafHashes[4]).toBe(config.hashes.apu.leafHashes[6]); // zip
+        expect(claimObject.hashes.leafHashes[0]).toBe(config.hashes.apu.leafHashes[1]); // general:surName
+        expect(claimObject.hashes.leafHashes[1]).toBe(config.hashes.apu.leafHashes[3]); // birth:date
+        expect(claimObject.hashes.leafHashes[2]).toBe(config.hashes.apu.leafHashes[4]); // birth:place
+        expect(claimObject.hashes.leafHashes[3]).toBe(config.hashes.apu.leafHashes[5]); // address:city
+        expect(claimObject.hashes.leafHashes[4]).toBe(config.hashes.apu.leafHashes[6]); // address:zip
+        expect(claimObject.hashes.leafHashes[5]).toBe(config.hashes.apu.leafHashes[8]); // address:countryCode
     });
 
 
@@ -65,9 +65,9 @@ describe('Claim module tests', () => {
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'first-name',
-                'birth-date',
-                'country'
+                'general:givenName',
+                'birth:date',
+                'address:countryCode'
             ]
         };
 
@@ -89,9 +89,9 @@ describe('Claim module tests', () => {
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'first-name',
-                'birth-date',
-                'country'
+                'general:givenName',
+                'birth:date',
+                'address:countryCode'
             ]
         };
 
@@ -114,9 +114,9 @@ describe('Claim module tests', () => {
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'first-name',
-                'birth-date',
-                'country'
+                'general:givenName',
+                'birth:date',
+                'address:countryCode'
             ]
         };
 
@@ -139,9 +139,9 @@ describe('Claim module tests', () => {
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'first-name',
-                'birth-date',
-                'country'
+                'general:givenName',
+                'birth:date',
+                'address:countryCode'
             ]
         };
 

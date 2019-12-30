@@ -1,40 +1,41 @@
-
 const config = {
-
-    userData: {
+    userData: { 
         apuUnprepared: [
-            { name: 'first-name', value: 'apu' },
-            { name: 'sur-name', value: 'Nahasapeemapetilon' },
-            { name: 'birth-date', value: '01.01.1942' },
-            { name: 'street', value: 'market-street' },
-            { name: 'street-number', value: '42' },
-            { name: 'city', value: 'springfield' },
-            { name: 'zip', value: '42424' },
-            { name: 'country', value: 'us' }
+            { name: 'general:givenName',    value: 'apu' },
+            { name: 'general:surName',      value: 'nahasapeemapetilon' },
+            { name: 'general:nationality',  value: 'american' },
+            { name: 'birth:date',           value: '04.02.1942' },
+            { name: 'birth:place',          value: 'rahmatpur' },
+            { name: 'address:city',         value: 'springfield' },
+            { name: 'address:zip',          value: '422442' },
+            { name: 'address:state',        value: 'illinois' },
+            { name: 'address:countryCode',  value: 'us' }
         ],
         apu: [
-            { name: 'first-name', value: 'apu', nonce: 'Q1HdKqZdmQoqF32lrVpeHEgMEAtHIej2SIFXE7Um1Y2ZQEY1kyvbiWGwpA3SsXCj' },
-            { name: 'sur-name', value: 'Nahasapeemapetilon', nonce: '4mhonVTZy3hEAqMkkcZAdrN1xsh9v4mfzEF6N5XKvnKMpQxlVN4a9Vo4AlVPasnX' },
-            { name: 'birth-date', value: '01.01.1942', nonce: 'UD160FTlPNszcvEgp4OTTrsARkyQ0O0q2BaGGTIo714BTiVv5awTmJ76bvxEEhQJ' },
-            { name: 'street', value: 'market-street', nonce: 'RA50AKJblTFFQNYSdcpoULEl4rjWov2ByhY3aOmY1aEvXB9JGt5jQeGQUjamLK3d' },
-            { name: 'street-number', value: '42', nonce: '4jViDjxL3IsdGOMNqPQ4t7xiyGP7S5rPcu9ILF4ZMXexiVtv7uZSNNznx9rdg6dS' },
-            { name: 'city', value: 'springfield', nonce: 'rFZkZQhRl2zyxVyX50U0SQj6ge1insBqkGMQsqSIpcRSki6j6VdJynom6FjCdktk' },
-            { name: 'zip', value: '42424', nonce: 'lzgAqi5XqaOCEUqe5hO527Gdd7luF7hJaqFgROmBeec2VZPmDgryKN3QmLEfiBZ7' },
-            { name: 'country', value: 'us', nonce: '6zikaMbm8L7dnIvdFO65ekSBnzyu75wMAjzjQCN6Av50UAw7uBOHptLnCDxeYWVL' } 
+            { name: 'general:givenName',    value: 'apu',                   nonce: '2LqyL4UHmjNFd2UfykUud7niemEEyUBSfAYvTKMKX6ipM37G6Fk94AtCqlFHJOHr' },
+            { name: 'general:surName',      value: 'nahasapeemapetilon',    nonce: 'WNTZLpacUsMYYhfZdmsn2UwvAMay6zcDEgWwSdUYYzNNssvCkmyQVm6jd6ATfmTj' },
+            { name: 'general:nationality',  value: 'american',              nonce: 'ODUVizex9PEkFG63ZVI7h4Ae6qyj5tYK5iZ9bpOjpHXx1dJhkoLELNHvOOtHIQmq' },
+            { name: 'birth:date',           value: '04.02.1942',            nonce: '7LqA72Nqw1ONeQNCKUoub6GnnjrjqeX8wCS5UdjyfERMBIpvMbHOhY6FbNUvK3Hr' },
+            { name: 'birth:place',          value: 'rahmatpur',             nonce: '0rc71Das18a7blLvL2warMpiaw5Q7PsXq8EgEmFBqcDbsZFxmNshRHfbbxuEtEi1' },
+            { name: 'address:city',         value: 'springfield',           nonce: 'eBaiWBcw4AHaeI5pWcRasvaXJFaP0ApL1vOktdj30wH1fTSBvyHuEmGavtgfDwra' },
+            { name: 'address:zip',          value: '422442',                nonce: '9WMkXLFFo2xdjkZDJYyMtVUm0YwUtnkireFRBdvHjeldUpue8nYFf6lBojHzrlYB' },
+            { name: 'address:state',        value: 'illinois',              nonce: 'gI9dDBoOqT2Vt04Hmbi59tsZuvyCSLNfPRmlJxeU4IiZN4FdsIZJEvU9RNyNJa9i' },
+            { name: 'address:countryCode',  value: 'us',                    nonce: 'EnYg7EpDzOSPJM3QVfi0DtKmgwiYX4slAv5zNPmenSXiM5PSPAz03PfNI5C1XEDV' }
         ]
     },
     hashes: {
         apu: {
-            rootHash: '5f47368e39277425148985e536db82c62dbb63d7dda8e3f14162f2d1164451e2',
+            rootHash: '9eb00fd0e01dbb903ce6512fe0c8612692b60724e0b2d7a41891f5666912153e',
             leafHashes: [
-                '972e13221d48058ee84f27977e0fb07f9c165b3c89f908551680a1507f18f1e6',
-                '5163271fa409a9832c433aa8fe061ead412db677349c296552d2d96a74ab334e',
-                'ac98b6b00cdebf92364bab16531c1c45492dfdf552560cfae76581d2b6698872',
-                'cbc42652198c2bbf4cb35bb6db7ef722e67fb888e62dbae57c61141fb64e6554',
-                'd10e174267e0042ad4c13f95a11fec07350ddf5dfc2aa5b936ff2975672d4c07',
-                '9eb45e4f0acb1ed7a5b431bb5fc548559056be1a81862aba8d6c1a1668aeb85c',
-                '2397c1d583e7ee280c244b12e5aa68b1d4707c225275bd6899c96081e17abf1e',
-                '417a8575d6f1181aba7952146fdda5ec5db41987bd1378965a188d98fe1be28b' 
+                '2062f74d687e4d8498116de9ea9a63f89b2b98b5442989c474088d27da618300',
+                '783fd6868618d40f86aec0d3468fb15a1aa6464d0bd34eea9478b8d3637becd8',
+                'e665592df0614a0c6d837145b94887ed80d450a365a46e93cfed00fca91ac54d',
+                'd206b3681eed1dc610bfb337289056dcf923e95c92ae7b5d4dad602b9f35f0e9',
+                'b873d6e588d7642693b49cb55d93a53fd83afed045452b41c189876cae8c3e02',
+                '41c09ec51d6f373edf20559e929029a44e68fa80d3bafdb44e41d6551562c27f',
+                'c408700b01a0f7129ef44b2257dac882721cdb2795ed7a74698f5e2b12b13139',
+                'e68fcaaa6f8e5801bc1870ddd5c8e1f585cbf91ca481c2afd96404a4d6a11993',
+                'ae8934aca3733e086240141dee61233bdb8b06b7836f01c78e37ac089b3be7ab' 
             ]
         }
     }
