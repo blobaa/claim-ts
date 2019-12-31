@@ -9,19 +9,20 @@ An implementation of the Attestation Protocol [Claim Extension](https://github.c
   - [General](#general)
   - [APIs](#apis)
     - [Claim](#claim)
-      - [Claim Registration](#claim-registration)
-      - [Verifiable Claim Creation](#verifiable-claim-creation)
-      - [Claim Verification](#claim-verification)
+  - [Example](#example)
+    - [Claim Registration](#claim-registration)
+    - [Verifiable Claim Creation](#verifiable-claim-creation)
+    - [Claim Verification](#claim-verification)
+  - [Module Instantiation](#module-instantiation)
 
 
 ## Install
 
 At the current state this library is published to the GitHub npm registry only.
-To use it as a dependency, create an *.npmrc* file in the same directory as your *package.json* and add the following line 
+To use it as a dependency, create a *.npmrc* file in the same directory as your *package.json* and add the following line 
 
 ````
 @project-ap:registry=https://npm.pkg.github.com/project-ap
-@somedotone:registry=https://npm.pkg.github.com/somedotone
 ```` 
 
 This tells npm to use the GitHub registry for scoped packages.
@@ -36,6 +37,8 @@ More information can be found at the [npm package](https://github.com/project-ap
 
 
 ## Test
+
+Clone the repo and run the following commands:
 
 browser:
 ````
@@ -52,12 +55,15 @@ npm run test-node
 
 ## General
 
-<!-- This library uses the [ardor-ts](https://github.com/somedotone/ardor-ts) package to interact with the [Ardor](ardorplatform.org/) Blockchain. At the current state there is no child chain and fee configuration possible. It uses the default ardor-ts configuration and therefore the IGNIS child chain and automatic fee calculation.
+Because this library implements the claim extension of the Attestation Protocol [documentation](https://github.com/project-ap/documentation/wiki/Home), it must be used in combination with the Attestation Protocol [implementation](https://github.com/project-ap/attestation-protocol-ts).
 
-There are lots of tests in the test folder. Have a look if you need some additional examples of how to use the APIs.
+There are three major steps for a claim based authentication mechanism: claim registration, claim creation and claim verification.
 
-This version implements the Attestation Protocol version 1.0.0 -->
+The claim **registration process** register a claim to an account in the way that an attestor attests an account with the claims root hash as payload. This ensures that a claim is created and / or verified by a trusted entity.
 
+An attested account holder can then **create** verifiable **claims** self sovereignly. One can decide which subset of registered claim user data one wants to share and a verifier can later verify the authenticity of this subset without knowing the whole registered claim data. To do so, one selects the user data to claim, creates the claim and signs it in the way described in the Attestation Protocol, where the payload contains the previous created claim.
+
+The verifier then is able to **verify** the **claim** against the self created root hash (based on the claim user data and hashes) and the root hash attached to the claim creator account. If these hashes match, The same verification process comes into place as described in the Attestation Protocol. If the verification process succeed, the verifier can be sure that the claim is indeed signed by the claim creator account, the claim data are valid and attested by a trustworthy entity.
 
 ## APIs
 
@@ -75,8 +81,23 @@ The Claim module provides APIs for claim data preparation, claim creation and cl
 - verifyClaim: (params: VerifyClaimParams) => boolean
 ````
 
+The **prepareUserData** function extends an unprepared user data object with a unique alphanumeric nonce.
 
-#### Claim Registration
+The **setUserData** function consumes an array of prepared user data objects and stores it internally.
+
+The **createHashes** function returns an object that contains the root hash and the leaf hashes of the user data object.
+
+The **createClaim** function creates a claim object based on preselected user data.
+
+The **verifyClaim** function verifies a claim object.
+
+
+## Example
+
+
+
+
+### Claim Registration
 
 ````typescript
 import { claim, SetUserDataParams, PrepareUserDataParams } from '@project-ap/claim-ts'
@@ -146,7 +167,7 @@ const claimRegistrationExample = async () => {
     try {
 
         /* create and emit request */
-        const response =await attestation.createLeafAttestation('https://testardor.jelurida.com', params3);
+        const response = await attestation.createLeafAttestation('https://testardor.jelurida.com', params3);
 
         /* the claim is now registered with the specified user data array to the attested account (Apu`s account) */
         console.log('transaction id:', response.transactionId);
@@ -166,7 +187,7 @@ claimRegistrationExample();
 ````
 
 
-#### Verifiable Claim Creation
+### Verifiable Claim Creation
 
 ````typescript
 import { claim, CreateClaimParams, SetUserDataParams } from '@project-ap/claim-ts';
@@ -240,7 +261,7 @@ verifiableClaimCreationExample();
 ````
 
 
-#### Claim Verification
+### Claim Verification
 
 ````typescript
 import { claim, VerifyClaimParams, ClaimObject } from '@project-ap/claim-ts'
@@ -304,9 +325,11 @@ const claimVerificationExample = async () => {
     
     const claimEntityCheckCallback = (entity: EntityCheckParams): boolean => {
 
+        /* show trust chain entities */
         console.log('account: ', entity.account);
         console.log('payload: ', entity.payload);
         console.log('entity : ', entity.entityType, '\n');
+
 
         /* check if the root hash is attached to the claim creator account */
         if(claimCreator === entity.account && rootHash === entity.payload) {
@@ -360,27 +383,28 @@ claimVerificationExample();
 ````
 
 
-<!-- ## Module Instantiation
+## Module Instantiation
 
-Each module is pre instantiated and importable via the lower case module name. If you need the class definition of a module, import it via the upper case name. For example:
+The claim module is pre instantiated and importable via the lower case module name. If you need the class definition, import it via the upper case name. For example:
 
 ````typescript
-import { SignDataParams, data, Data } from '@project-ap/attestation-protocol-ts'
+import { claim, Claim, PrepareUserDataParams} from '@project-ap/claim-ts'
 
 
-const params: SignDataParams = {
-    attestationContext: "exampleContext",
-    payload: "exampleDataPayload",
-    passphrase: "<some passphrase>"
+const params: PrepareUserDataParams = {
+    userData: [
+        { name: 'data1', value: '42'},
+        { name: 'data2', value: '42'}
+    ]
 };
 
 
 /* use the default instance */
-const signedData = data.signData(params);
-console.log(signedData);
+const userData = claim.prepareUserData(params);
+console.log(userData);
 
 /* use your own instance */
-const myData = new Data();
-const signedData2 = myData.signData(params);
-console.log(signedData2);
-```` -->
+const myClaim = new Claim();
+const userData2 = myClaim.prepareUserData(params);
+console.log(userData2);
+````
