@@ -1,6 +1,6 @@
 # claim-ts
 
-An implementation of the Attestation Protocol [Claim Extension](https://github.com/project-ap/documentation/wiki/Attestation-Protocol) written in [TypeScript](https://www.typescriptlang.org).
+An implementation of the Attestation Protocol [Claim Extension](https://github.com/blobaa/documentation/wiki/Attestation-Protocol) written in [TypeScript](https://www.typescriptlang.org).
 
 
 - [claim-ts](#claim-ts)
@@ -22,17 +22,17 @@ At the current state this library is published to the GitHub npm registry only.
 To use it as a dependency, create a *.npmrc* file in the same directory as your *package.json* and add the following line 
 
 ````
-@project-ap:registry=https://npm.pkg.github.com/project-ap
+@blobaa:registry=https://npm.pkg.github.com/blobaa
 ```` 
 
 This tells npm to use the GitHub registry for scoped packages.
 You can now install the npm package via
 
 ````
-npm install @project-ap/claim-ts@<release version>
+npm install @blobaa/claim-ts@<release version>
 ````
 
-More information can be found at the [npm package](https://github.com/project-ap/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
+More information can be found at the [npm package](https://github.com/blobaa/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
 
 
 
@@ -55,7 +55,7 @@ npm run test-node
 
 ## General
 
-Because this library implements the claim extension of the Attestation Protocol [documentation](https://github.com/project-ap/documentation/wiki/Home), it must be used in combination with the Attestation Protocol [implementation](https://github.com/project-ap/attestation-protocol-ts).
+Because this library implements the claim extension of the Attestation Protocol [documentation](https://github.com/blobaa/documentation/wiki/Home), it must be used in combination with the Attestation Protocol [implementation](https://github.com/blobaa/attestation-protocol-ts).
 
 There are three major steps for a claim based authentication mechanism: claim registration, claim creation and claim verification.
 
@@ -100,8 +100,8 @@ The **verifyClaim** function verifies a claim object.
 ### Claim Registration
 
 ````typescript
-import { claim, SetUserDataParams, PrepareUserDataParams } from '@project-ap/claim-ts'
-import { attestation, CreateLeafAttestationParams } from '@project-ap/attestation-protocol-ts'
+import { claim, SetUserDataParams, PrepareUserDataParams } from '@blobaa/claim-ts'
+import { attestation, CreateLeafAttestationParams } from '@blobaa/attestation-protocol-ts'
 
 
 /* unprepared claim user data */
@@ -190,8 +190,8 @@ claimRegistrationExample();
 ### Verifiable Claim Creation
 
 ````typescript
-import { claim, CreateClaimParams, SetUserDataParams } from '@project-ap/claim-ts';
-import { data, SignDataParams } from '@project-ap/attestation-protocol-ts';
+import { claim, CreateClaimParams, SetUserDataParams } from '@blobaa/claim-ts';
+import { data, SignDataParams } from '@blobaa/attestation-protocol-ts';
 
 
 /* the prepared claim user data forwarded at the claim registration process (see Claim Registration) */
@@ -264,8 +264,8 @@ verifiableClaimCreationExample();
 ### Claim Verification
 
 ````typescript
-import { claim, VerifyClaimParams, ClaimObject } from '@project-ap/claim-ts'
-import { data, VerifySignedDataParams, SignedDataCheckParams, EntityCheckParams, Error, ErrorCode, SignedData } from '@project-ap/attestation-protocol-ts'
+import { claim, VerifyClaimParams, ClaimObject } from '@blobaa/claim-ts'
+import { data, VerifySignedDataParams, SignedDataCheckParams, EntityCheckParams, Error, ErrorCode, SignedData } from '@blobaa/attestation-protocol-ts'
 
 
 /* the signed claim created at the claim creation process (see Verifiable Claim Creation) */
@@ -388,7 +388,7 @@ claimVerificationExample();
 The claim module is pre instantiated and importable via the lower case module name. If you need the class definition, import it via the upper case name. For example:
 
 ````typescript
-import { claim, Claim, PrepareUserDataParams} from '@project-ap/claim-ts'
+import { claim, Claim, PrepareUserDataParams} from '@blobaa/claim-ts'
 
 
 const params: PrepareUserDataParams = {
