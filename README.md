@@ -40,30 +40,15 @@ More information can be found at the [npm package](https://github.com/blobaa/cla
 
 Clone the repo and run the following commands:
 
-browser:
-````
-npm run test-browser
-````
-
-node:
-````
-npm run test-node
-````
-
-`npm test` runs both tests.
+- browser: `npm run test-browser`
+- node: `npm run test-node`
+- both: `npm test`
 
 
 ## General
 
-Because this library implements the claim extension of the Attestation Protocol [documentation](https://github.com/blobaa/documentation/wiki/Home), it must be used in combination with the Attestation Protocol [implementation](https://github.com/blobaa/attestation-protocol-ts).
+This library implements the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module and must therefore be used in conjunction with the [Attestation Protocol](https://github.com/blobaa/documentation/wiki/Attestation-Protocol) [implementation](https://github.com/blobaa/attestation-protocol-ts) to realise verifiable claim based authentication.
 
-There are three major steps for a claim based authentication mechanism: claim registration, claim creation and claim verification.
-
-The claim **registration process** register a claim to an account in the way that an attestor attests an account with the claims root hash as payload. This ensures that a claim is created and / or verified by a trusted entity.
-
-An attested account holder can then **create** verifiable **claims** self sovereignly. One can decide which subset of registered claim user data one wants to share and a verifier can later verify the authenticity of this subset without knowing the whole registered claim data. To do so, one selects the user data to claim, creates the claim and signs it in the way described in the Attestation Protocol, where the payload contains the previous created claim.
-
-The verifier then is able to **verify** the **claim** against the self created root hash (based on the claim user data and hashes) and the root hash attached to the claim creator account. If these hashes match, The same verification process comes into place as described in the Attestation Protocol. If the verification process succeed, the verifier can be sure that the claim is indeed signed by the claim creator account, the claim data are valid and attested by a trustworthy entity.
 
 ## APIs
 
@@ -94,7 +79,9 @@ The **verifyClaim** function verifies a claim object.
 
 ## Example
 
+The following example shows sample code for the three Claim workflows (registering, creating and verifying a verifiable claim) and uses, as described above, the Attestation Protocol implementation additionally to this Claim library.
 
+It uses a fictive sample scenario of a registration office where the [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) character [Apu](https://en.wikipedia.org/wiki/Apu_Nahasapeemapetilon), the owner of Springfield's Kwik-E-Mart, receives and uses a verifiable claim which represents (a subset of) his id card information.
 
 
 ### Claim Registration
