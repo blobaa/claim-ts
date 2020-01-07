@@ -79,9 +79,9 @@ The **verifyClaim** function verifies a claim object.
 
 ## Example
 
-The following example shows sample code for the three Claim workflows (registering, creating and verifying a verifiable claim) and uses, as described above, the Attestation Protocol implementation additionally to this Claim library.
+The following example shows sample code for the three Claim workflows (registering, creating, and verifying a verifiable claim). It uses, as described above, the Attestation Protocol implementation, additionally to this Claim library.
 
-It uses a fictive sample scenario of a registration office where the [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) character [Apu](https://en.wikipedia.org/wiki/Apu_Nahasapeemapetilon), the owner of Springfield's Kwik-E-Mart, receives and uses a verifiable claim which represents (a subset of) his id card information.
+It shows a fictive scenario of a registration office where the [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) character [Apu](https://en.wikipedia.org/wiki/Apu_Nahasapeemapetilon), the owner of Springfield's Kwik-E-Mart, receives and uses a verifiable claim which represents (a subset of) his id card information.
 
 
 ### Claim Registration
