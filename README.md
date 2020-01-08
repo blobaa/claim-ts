@@ -14,6 +14,7 @@ An implementation of the Attestation Protocol [Claim Extension](https://github.c
     - [Verifiable Claim Creation](#verifiable-claim-creation)
     - [Claim Verification](#claim-verification)
   - [Module Instantiation](#module-instantiation)
+  - [License](#license)
 
 
 ## Install
@@ -395,3 +396,11 @@ const myClaim = new Claim();
 const userData2 = myClaim.prepareUserData(params);
 console.log(userData2);
 ````
+
+
+## License
+
+claim-ts source code ("The Software") is licensed under both GNU Affero General Public License v3.0 or later and a proprietary license that can be arranged with me. In practical sense, this means:
+
+- if you are developing Open Source Software (OSS) based on claim-ts, chances are you will be able to use claim-ts freely under AGPL. Please double check [here](https://www.gnu.org/licenses/agpl-3.0.en.html) for OSS license compatibility with AGPL.
+- Alternatively, if you are unable to release your application as Open Source Software, you may arrange alternative licensing with me. Just send your inquiry to a_aldemir@hotmail.de to discuss this option.
