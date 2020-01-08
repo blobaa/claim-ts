@@ -1,6 +1,6 @@
 # claim-ts
 
-An implementation of the Attestation Protocol [Claim Extension](https://github.com/blobaa/documentation/wiki/Claim) written in [TypeScript](https://www.typescriptlang.org).
+An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module written in [TypeScript](https://www.typescriptlang.org).
 
 
 - [claim-ts](#claim-ts)
