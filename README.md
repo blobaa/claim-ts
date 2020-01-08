@@ -36,7 +36,6 @@ npm install @blobaa/claim-ts@<release version>
 More information can be found at the [npm package](https://github.com/blobaa/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
 
 
-
 ## Test
 
 Clone the repo and run the following commands:
@@ -404,3 +403,6 @@ claim-ts source code ("The Software") is licensed under both GNU Affero General 
 
 - If you are developing Open Source Software (OSS) based on claim-ts, chances are you will be able to use claim-ts freely under AGPL. Please double check [here](https://www.gnu.org/licenses/agpl-3.0.en.html) for OSS license compatibility with AGPL.
 - Alternatively, if you are unable to release your application as Open Source Software, you may arrange alternative licensing with me. Just send your inquiry to a_aldemir@hotmail.de to discuss this option.
+
+____
+Enjoy :)
