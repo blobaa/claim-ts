@@ -1,4 +1,4 @@
-# claim-ts
+# Claim TypeScript
 
 An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module written in [TypeScript](https://www.typescriptlang.org).
 
