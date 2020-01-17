@@ -15,11 +15,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import ClaimHandler from './modules/ClaimHandler'
+import ClaimHandler from './modules/ClaimHandler';
 import { IClaim } from './types';
 
-export * from './types'
+export * from './types';
 
 
 export const claim: IClaim = new ClaimHandler();
-export class Claim extends ClaimHandler {};
+export class Claim extends ClaimHandler {}

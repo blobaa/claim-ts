@@ -4,8 +4,8 @@ An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Cl
 
 
 - [claim-ts](#claim-ts)
-  - [Install](#install)
-  - [Test](#test)
+  - [Installation](#installation)
+  - [Development](#development)
   - [General](#general)
   - [APIs](#apis)
     - [Claim](#claim)
@@ -18,7 +18,7 @@ An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Cl
     - [Dual-License](#dual-license)
 
 
-## Install
+## Installation
 
 At the current state this library is published to the GitHub npm registry only.
 To use it as a dependency, create a *.npmrc* file in the same directory as your *package.json* and add the following line 
@@ -37,13 +37,41 @@ npm install @blobaa/claim-ts@<release version>
 More information can be found at the [npm package](https://github.com/blobaa/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
 
 
-## Test
+## Development
 
-Clone the repo and run the following commands:
+You need to have [Node.js](https://nodejs.org/en/) installed.
 
-- browser: `npm run test-browser`
-- node: `npm run test-node`
-- both: `npm test`
+To **initialize** the project just clone this repository and run
+```
+npm install
+```
+
+For **linting** run 
+```
+npm run lint
+```
+
+You can try to **autofix lint errors** with
+```
+npm run fix-lint
+```
+
+For **unit testing** run the following associated commands
+
+browser:
+```
+npm run test-browser
+```
+
+node: 
+```
+npm run test-node
+```
+
+both: 
+```
+npm test
+```
 
 
 ## General

@@ -16,7 +16,7 @@
  */
 
 const config = {
-    userData: { 
+    userData: {
         apuUnprepared: [
             { name: 'general:givenName',    value: 'apu' },
             { name: 'general:surName',      value: 'nahasapeemapetilon' },
@@ -52,11 +52,11 @@ const config = {
                 '41c09ec51d6f373edf20559e929029a44e68fa80d3bafdb44e41d6551562c27f',
                 'c408700b01a0f7129ef44b2257dac882721cdb2795ed7a74698f5e2b12b13139',
                 'e68fcaaa6f8e5801bc1870ddd5c8e1f585cbf91ca481c2afd96404a4d6a11993',
-                'ae8934aca3733e086240141dee61233bdb8b06b7836f01c78e37ac089b3be7ab' 
+                'ae8934aca3733e086240141dee61233bdb8b06b7836f01c78e37ac089b3be7ab'
             ]
         }
     }
-}
+};
 
 
 export default config;

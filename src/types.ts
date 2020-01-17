@@ -15,39 +15,40 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/*eslint-disable @typescript-eslint/no-explicit-any*/
 export type objectAny = {[name: string]: any};
+/*eslint-enable @typescript-eslint/no-explicit-any*/
 export type atomicObject = {[name: string]: string};
 
-
-export interface PrepareUserDataParams {
-    unpreparedUserData: { name: string, value: string}[];
+export type PrepareUserDataParams = {
+    unpreparedUserData: { name: string; value: string}[];
 }
 
-export interface UserData { 
+export type UserData = {
     name: string;
     value: string;
     nonce: string;
 }
 
-export interface Hashes {
+export type Hashes = {
     leafHashes: string[];
     rootHash: string;
 }
 
-export interface SetUserDataParams {
+export type SetUserDataParams = {
     userData: UserData[];
 }
 
-export interface CreateClaimParams {
+export type CreateClaimParams = {
     userDataNames: string[];
 }
 
-export interface ClaimObject {
+export type ClaimObject = {
     userData: UserData[];
     hashes: Hashes;
 }
 
-export interface VerifyClaimParams {
+export type VerifyClaimParams = {
     claimObject: ClaimObject;
 }
 

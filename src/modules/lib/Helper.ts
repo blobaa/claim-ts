@@ -15,14 +15,14 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { objectAny, atomicObject } from "../../types"
+import { objectAny, atomicObject } from "../../types";
 
 
-export default class Helpers {
+export default class Helper {
 
     public static concatObjectValues = (object: atomicObject): string => {
         let concatString = "";
-        Helpers.sortObjectKeysAlphanumeric(object, key => concatString += object[key]);
+        Helper.sortObjectKeysAlphanumeric(object, key => concatString += object[key]);
         return concatString;
     }
 
@@ -31,14 +31,14 @@ export default class Helpers {
     }
 
 
-    public static concatArrayElements = (array: string[]) => {
+    public static concatArrayElements = (array: string[]): string => {
         let concatString = "";
-        Helpers.sortArrayElementsAlphanumeric(array, element => concatString += element);
+        Helper.sortArrayElementsAlphanumeric(array, element => concatString += element);
         return concatString;
     }
-    
-    private static sortArrayElementsAlphanumeric = (array: string[], callback: (element: string) => void) => {
-        array.sort().forEach((element) => callback(element));
+
+    private static sortArrayElementsAlphanumeric = (array: string[], callback: (element: string) => void): void => {
+        array.sort().forEach(element => callback(element));
     }
-    
+
 }

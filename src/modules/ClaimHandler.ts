@@ -15,11 +15,11 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import Nonce from './lib/Nonce';
-import Helpers from './lib/Helper';
 import { sha256 } from 'js-sha256';
 import utf8 from 'utf8';
 import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject, SetUserDataParams, CreateClaimParams, VerifyClaimParams } from '../types';
+import Helper from './lib/Helper';
+import Nonce from './lib/Nonce';
 
 
 export default class ClaimHandler implements IClaim {
@@ -30,8 +30,8 @@ export default class ClaimHandler implements IClaim {
 
     public prepareUserData = (params: PrepareUserDataParams): UserData[] => {
         const userDataWithNonce: UserData[] = [];
-        
-        params.unpreparedUserData.forEach(userDataObject => {
+
+        params.unpreparedUserData.forEach((userDataObject) => {
             userDataWithNonce.push({ name: userDataObject.name, value: userDataObject.value, nonce: Nonce.generate() });
         });
 
@@ -54,8 +54,8 @@ export default class ClaimHandler implements IClaim {
     private createLeafHashes = (data: UserData[]): string[] => {
         const leafHashes: string[] = [];
 
-        data.forEach(dataObject => {
-            const concatData = Helpers.concatObjectValues({ name: dataObject.name, value: dataObject.value, nonce: dataObject.nonce });
+        data.forEach((dataObject) => {
+            const concatData = Helper.concatObjectValues({ name: dataObject.name, value: dataObject.value, nonce: dataObject.nonce });
             leafHashes.push(this.createHash(concatData));
         });
 
@@ -67,7 +67,7 @@ export default class ClaimHandler implements IClaim {
     }
 
     private createRootHash = (leafHashes: string[]): string => {
-        const concatLeafHashes = Helpers.concatArrayElements([ ...leafHashes ]);
+        const concatLeafHashes = Helper.concatArrayElements([ ...leafHashes ]);
         return this.createHash(concatLeafHashes);
     }
 
@@ -84,16 +84,16 @@ export default class ClaimHandler implements IClaim {
                 leafHashes: claimLeafHashes,
                 rootHash: userDataHashes.rootHash
             }
-        }
+        };
         return claimObject;
     }
 
     private getClaimData = (userDataNames: string[]): UserData[] => {
         const claimData: UserData[] = [];
 
-        userDataNames.forEach(name => {
-            this.userData.forEach(userDataObject => {
-                if(name === userDataObject.name) claimData.push(userDataObject);
+        userDataNames.forEach((name) => {
+            this.userData.forEach((userDataObject) => {
+                if (name === userDataObject.name) claimData.push(userDataObject);
             });
         });
 
@@ -101,18 +101,18 @@ export default class ClaimHandler implements IClaim {
     }
 
     private getClaimLeafHashes = (userDataLeafHashes: string[], claimDataLeafHashes: string[]): string[] => {
-        return userDataLeafHashes.filter(userDataLeafHash => {
+        return userDataLeafHashes.filter((userDataLeafHash) => {
             let addToClaim = true;
 
-            claimDataLeafHashes.forEach(claimDataLeafHash => {
-                if(userDataLeafHash === claimDataLeafHash) addToClaim = false;
+            claimDataLeafHashes.forEach((claimDataLeafHash) => {
+                if (userDataLeafHash === claimDataLeafHash) addToClaim = false;
             });
 
             return addToClaim;
         });
     }
 
-    
+
     public verifyClaim = (params: VerifyClaimParams): boolean => {
         const claimDataLeafHashes = this.createLeafHashes(params.claimObject.userData);
         const leafHashes = claimDataLeafHashes.concat(params.claimObject.hashes.leafHashes);
