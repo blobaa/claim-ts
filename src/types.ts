@@ -15,9 +15,8 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*eslint-disable @typescript-eslint/no-explicit-any*/
+/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/
 export type objectAny = {[name: string]: any};
-/*eslint-enable @typescript-eslint/no-explicit-any*/
 export type atomicObject = {[name: string]: string};
 
 export type PrepareUserDataParams = {
@@ -54,10 +53,13 @@ export type VerifyClaimParams = {
 
 
 export interface IClaim {
-    prepareUserData: (params: PrepareUserDataParams) => UserData[];
-    createHashes: () => Hashes;
-    setUserData: (params: SetUserDataParams) => void;
-    createClaim: (params: CreateClaimParams) => ClaimObject;
-    verifyClaim: (params: VerifyClaimParams) => boolean;
+    prepareUserData(params: PrepareUserDataParams): UserData[];
+    createHashes(): Hashes;
+    setUserData(params: SetUserDataParams): void;
+    createClaim(params: CreateClaimParams): ClaimObject;
+    verifyClaim(params: VerifyClaimParams): boolean;
 }
 
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IClaimService extends IClaim {}

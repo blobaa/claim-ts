@@ -15,25 +15,25 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from '../src/index';
-import config from './config';
+import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from "../src/index";
+import config from "./config";
 
 
-describe('Claim module tests', () => {
+describe("Claim module tests", () => {
 
-    test('prepareUserData', () => {
-        const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    test("prepareUserData", () => {
+        const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
         const params: PrepareUserDataParams = { unpreparedUserData: config.userData.apuUnprepared };
         const preparedUserData = claim.prepareUserData(params);
 
         expect(preparedUserData[0].nonce.length).toBe(64);
-        preparedUserData[0].nonce.split('').forEach(char => expect(charset.includes(char)).toBeTruthy());
+        preparedUserData[0].nonce.split("").forEach(char => expect(charset.includes(char)).toBeTruthy());
         preparedUserData.forEach(preparedUserDataObject => expect(preparedUserDataObject.nonce).toBeDefined());
     });
 
 
-    test('getHashes success', () => {
+    test("getHashes success", () => {
         const params: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params);
         const hashes = claim.createHashes();
@@ -43,16 +43,16 @@ describe('Claim module tests', () => {
     });
 
 
-    test('createClaim success', () => {
+    test("createClaim success", () => {
         const params1: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params1);
 
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'general:givenName',
-                'general:nationality',
-                'address:state'
+                "general:givenName",
+                "general:nationality",
+                "address:state"
             ]
         };
 
@@ -75,16 +75,16 @@ describe('Claim module tests', () => {
     });
 
 
-    test('verifyClaim success', () => {
+    test("verifyClaim success", () => {
         const params1: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params1);
 
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'general:givenName',
-                'birth:date',
-                'address:countryCode'
+                "general:givenName",
+                "birth:date",
+                "address:countryCode"
             ]
         };
 
@@ -99,21 +99,21 @@ describe('Claim module tests', () => {
     });
 
 
-    test('verifyClaim different user data error', () => {
+    test("verifyClaim different user data error", () => {
         const params1: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params1);
 
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'general:givenName',
-                'birth:date',
-                'address:countryCode'
+                "general:givenName",
+                "birth:date",
+                "address:countryCode"
             ]
         };
 
         const claimObject = claim.createClaim(params2);
-        claimObject.userData[0].nonce = '42';
+        claimObject.userData[0].nonce = "42";
 
 
         const param3: VerifyClaimParams = { claimObject };
@@ -124,21 +124,21 @@ describe('Claim module tests', () => {
     });
 
 
-    test('verifyClaim different leaf hash error', () => {
+    test("verifyClaim different leaf hash error", () => {
         const params1: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params1);
 
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'general:givenName',
-                'birth:date',
-                'address:countryCode'
+                "general:givenName",
+                "birth:date",
+                "address:countryCode"
             ]
         };
 
         const claimObject = claim.createClaim(params2);
-        claimObject.hashes.leafHashes[0] = '42';
+        claimObject.hashes.leafHashes[0] = "42";
 
 
         const param3: VerifyClaimParams = { claimObject };
@@ -149,21 +149,21 @@ describe('Claim module tests', () => {
     });
 
 
-    test('verifyClaim different root hash error', () => {
+    test("verifyClaim different root hash error", () => {
         const params1: SetUserDataParams = { userData: config.userData.apu };
         claim.setUserData(params1);
 
 
         const params2: CreateClaimParams = {
             userDataNames: [
-                'general:givenName',
-                'birth:date',
-                'address:countryCode'
+                "general:givenName",
+                "birth:date",
+                "address:countryCode"
             ]
         };
 
         const claimObject = claim.createClaim(params2);
-        claimObject.hashes.rootHash = '42';
+        claimObject.hashes.rootHash = "42";
 
 
         const param3: VerifyClaimParams = { claimObject };
