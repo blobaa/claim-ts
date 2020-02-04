@@ -15,64 +15,70 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { sha256 } from 'js-sha256';
-import utf8 from 'utf8';
-import { IClaim, UserData, PrepareUserDataParams, Hashes, ClaimObject, SetUserDataParams, CreateClaimParams, VerifyClaimParams } from '../types';
-import Helper from './lib/Helper';
-import Nonce from './lib/Nonce';
+import { sha256 } from "js-sha256";
+import utf8 from "utf8";
+import { ClaimObject, CreateClaimParams, Hashes, IClaimService, PrepareUserDataParams, SetUserDataParams, UserData, VerifyClaimParams } from "../../../types";
+import Helper from "./utils/Helper";
+import Nonce from "./utils/Nonce";
 
 
-export default class ClaimHandler implements IClaim {
+export default class ClaimService implements IClaimService {
 
     private userData: UserData[] = [];
 
 
-
-    public prepareUserData = (params: PrepareUserDataParams): UserData[] => {
+    public prepareUserData(params: PrepareUserDataParams): UserData[] {
         const userDataWithNonce: UserData[] = [];
 
         params.unpreparedUserData.forEach((userDataObject) => {
-            userDataWithNonce.push({ name: userDataObject.name, value: userDataObject.value, nonce: Nonce.generate() });
+            userDataWithNonce.push({
+                name: userDataObject.name,
+                value: userDataObject.value, nonce: Nonce.generate()
+            });
         });
 
         return userDataWithNonce;
     }
 
 
-    public setUserData = (params: SetUserDataParams): void => {
+    public setUserData(params: SetUserDataParams): void {
         this.userData = params.userData;
     }
 
 
-    public createHashes = (): Hashes => {
+    public createHashes(): Hashes {
         const leafHashes = this.createLeafHashes(this.userData);
         const rootHash = this.createRootHash(leafHashes);
 
         return { rootHash, leafHashes };
     }
 
-    private createLeafHashes = (data: UserData[]): string[] => {
+    private createLeafHashes(data: UserData[]): string[] {
         const leafHashes: string[] = [];
 
         data.forEach((dataObject) => {
-            const concatData = Helper.concatObjectValues({ name: dataObject.name, value: dataObject.value, nonce: dataObject.nonce });
+            const concatData = Helper.concatObjectValues({
+                name: dataObject.name,
+                value: dataObject.value,
+                nonce: dataObject.nonce
+            });
             leafHashes.push(this.createHash(concatData));
         });
 
         return leafHashes;
     }
 
-    private createHash = (data: string): string => {
+    private createHash(data: string): string {
         return sha256(utf8.encode(data));
     }
 
-    private createRootHash = (leafHashes: string[]): string => {
+    private createRootHash(leafHashes: string[]): string {
         const concatLeafHashes = Helper.concatArrayElements([ ...leafHashes ]);
         return this.createHash(concatLeafHashes);
     }
 
 
-    public createClaim = (params: CreateClaimParams): ClaimObject => {
+    public createClaim(params: CreateClaimParams): ClaimObject {
         const claimData = this.getClaimData(params.userDataNames);
         const claimDataLeafHashes = this.createLeafHashes(claimData);
         const userDataHashes = this.createHashes();
@@ -88,24 +94,28 @@ export default class ClaimHandler implements IClaim {
         return claimObject;
     }
 
-    private getClaimData = (userDataNames: string[]): UserData[] => {
+    private getClaimData(userDataNames: string[]): UserData[] {
         const claimData: UserData[] = [];
 
         userDataNames.forEach((name) => {
             this.userData.forEach((userDataObject) => {
-                if (name === userDataObject.name) claimData.push(userDataObject);
+                if (name === userDataObject.name) {
+                    claimData.push(userDataObject);
+                }
             });
         });
 
         return claimData;
     }
 
-    private getClaimLeafHashes = (userDataLeafHashes: string[], claimDataLeafHashes: string[]): string[] => {
+    private getClaimLeafHashes(userDataLeafHashes: string[], claimDataLeafHashes: string[]): string[] {
         return userDataLeafHashes.filter((userDataLeafHash) => {
             let addToClaim = true;
 
             claimDataLeafHashes.forEach((claimDataLeafHash) => {
-                if (userDataLeafHash === claimDataLeafHash) addToClaim = false;
+                if (userDataLeafHash === claimDataLeafHash) {
+                    addToClaim = false;
+                }
             });
 
             return addToClaim;
@@ -113,7 +123,7 @@ export default class ClaimHandler implements IClaim {
     }
 
 
-    public verifyClaim = (params: VerifyClaimParams): boolean => {
+    public verifyClaim(params: VerifyClaimParams): boolean {
         const claimDataLeafHashes = this.createLeafHashes(params.claimObject.userData);
         const leafHashes = claimDataLeafHashes.concat(params.claimObject.hashes.leafHashes);
         const rootHash = this.createRootHash(leafHashes);
