@@ -15,10 +15,6 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/
-export type objectAny = {[name: string]: any};
-export type atomicObject = {[name: string]: string};
-
 export type PrepareUserDataParams = {
     unpreparedUserData: { name: string; value: string}[];
 }
@@ -59,7 +55,3 @@ export interface IClaim {
     createClaim(params: CreateClaimParams): ClaimObject;
     verifyClaim(params: VerifyClaimParams): boolean;
 }
-
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IClaimService extends IClaim {}

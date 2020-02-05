@@ -15,8 +15,8 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { IClaimService, PrepareUserDataParams, UserData, Hashes, SetUserDataParams, CreateClaimParams, ClaimObject, VerifyClaimParams } from "../../../types";
-
+import { PrepareUserDataParams, UserData, Hashes, SetUserDataParams, CreateClaimParams, ClaimObject, VerifyClaimParams } from "../../../types";
+import { IClaimService } from "./../../internal-types";
 
 export default class ClaimController {
     private readonly service: IClaimService;
