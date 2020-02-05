@@ -3,7 +3,10 @@
 An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module written in [TypeScript](https://www.typescriptlang.org).
 
 
-- [claim-ts](#claim-ts)
+<details><summary><i>Table of Contents</i></summary>
+<p>
+
+- [Claim TypeScript](#claim-typescript)
   - [Installation](#installation)
   - [Development](#development)
   - [General](#general)
@@ -16,6 +19,9 @@ An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Cl
   - [Module Instantiation](#module-instantiation)
   - [Licensing](#licensing)
     - [Dual-License](#dual-license)
+
+</p>
+</details>
 
 
 ## Installation
