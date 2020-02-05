@@ -17,7 +17,8 @@
 
 import { sha256 } from "js-sha256";
 import utf8 from "utf8";
-import { ClaimObject, CreateClaimParams, Hashes, IClaimService, PrepareUserDataParams, SetUserDataParams, UserData, VerifyClaimParams } from "../../../types";
+import { ClaimObject, CreateClaimParams, Hashes, PrepareUserDataParams, SetUserDataParams, UserData, VerifyClaimParams } from "../../../types";
+import { IClaimService } from "../../internal-types";
 import Helper from "./utils/Helper";
 import Nonce from "./utils/Nonce";
 

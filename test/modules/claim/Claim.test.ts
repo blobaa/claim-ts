@@ -15,8 +15,8 @@
  *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from "../src/index";
-import config from "./config";
+import { claim, CreateClaimParams, PrepareUserDataParams, SetUserDataParams, VerifyClaimParams } from "../../../src/index";
+import config from "../../config";
 
 
 describe("Claim module tests", () => {
