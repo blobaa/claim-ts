@@ -116,31 +116,30 @@ The **verifyClaim** function verifies a claim object.
 
 The following example shows sample code for the three Claim workflows (registering, creating, and verifying a verifiable claim). It uses, as described above, the Attestation Protocol implementation, additionally to this Claim library.
 
-It shows a fictive scenario of a registration office where the [Simpsons](https://en.wikipedia.org/wiki/The_Simpsons) character [Apu](https://en.wikipedia.org/wiki/Apu_Nahasapeemapetilon), the owner of Springfield's Kwik-E-Mart, receives and uses a verifiable claim which represents (a subset of) his id card information.
+It shows a fictive scenario of a registration office where the user Oliver receives and uses the verifiable claim that represents a subset of his id card information.
 
 
 ### Claim Registration
 
 ````typescript
-import { claim, SetUserDataParams, PrepareUserDataParams } from '@blobaa/claim-ts'
-import { attestation, CreateLeafAttestationParams } from '@blobaa/attestation-protocol-ts'
+import { claim, SetUserDataParams, PrepareUserDataParams } from "@blobaa/claim-ts";
+import { attestation, CreateLeafAttestationParams } from "@blobaa/attestation-protocol-ts";
 
 
 /* unprepared claim user data */
 const data = [
-    { name: 'general:givenName',    value: 'apu' },
-    { name: 'general:surName',      value: 'nahasapeemapetilon' },
-    { name: 'general:nationality',  value: 'american' },
-    { name: 'birth:date',           value: '04.02.1942' },
-    { name: 'birth:place',          value: 'rahmatpur' },
-    { name: 'address:city',         value: 'springfield' },
-    { name: 'address:zip',          value: '422442' },
-    { name: 'address:state',        value: 'illinois' },
-    { name: 'address:countryCode',  value: 'us' }
+    { name: "address:city",     value: "Cologne" },
+    { name: "address:country",  value: "Germany" },
+    { name: "address:number",   value: "3" },
+    { name: "address:street",   value: "Kölner Weg" },
+    { name: "address:zip",      value: "11221" },
+    { name: "person:firstName", value: "Oliver" },
+    { name: "person:surName",   value: "Schmidt" },
+    { name: "person:birthDay",  value: "11.11.2000" }
 ];
 
 
-const claimRegistrationExample = async () => {
+const claimRegistrationExample = async (): Promise<void> => {
 
     /*
      * Step 1: Add a nonce to each user data object
@@ -150,11 +149,11 @@ const claimRegistrationExample = async () => {
     const params1: PrepareUserDataParams = {
         unpreparedUserData: data
     };
-    
+
     const userData = claim.prepareUserData(params1);
 
     /* the user data are now extended with unique 64 character long alphanumeric nonces */
-    console.log('prepared user data:\n', userData, '\n');
+    console.log("prepared user data:\n", userData, "\n");
 
 
     /*
@@ -162,48 +161,52 @@ const claimRegistrationExample = async () => {
      */
 
     const params2: SetUserDataParams = {
-        userData: userData
+        userData
     };
 
     claim.setUserData(params2); // stores the user data array internally
     const claimHashes = claim.createHashes();
 
     /* the root hash is now accessible via the rootHash key */
-    console.log('root hash:', claimHashes.rootHash, '\n');
+    console.log("root hash:", claimHashes.rootHash, "\n");
 
 
     /*
      * Step 3: Attach the root hash as attestation payload
      */
 
+    const rootHash = {
+        rootHash: claimHashes.rootHash
+    };
+
     const params3: CreateLeafAttestationParams = {
-        leafAccount: 'ARDOR-5HVX-MN8D-QNBH-4F6FE',      // account to be attested (Apu`s account)
-        attestationContext: 'claimExample',
-        payload: claimHashes.rootHash,                  // the root hash
-        
-        passphrase: '<some passphrase>',                // passphrase of attestor account
-        myAttestorAccount: 'ARDOR-ZXVB-LCDL-DE2U-22LK6' // [optional] account name of attestor accounts attestor.
+        leafAccount: "ARDOR-5HVX-MN8D-QNBH-4F6FE",      // account to be attested (Oliver`s account)
+        attestationContext: "claimAuthentication",
+        payload: JSON.stringify(rootHash),              // the root hash
+
+        passphrase: "<some passphrase>",                // passphrase of attestor account
+        myAttestorAccount: "ARDOR-47NS-P7AU-HZNN-84PW6" // [optional] account name of attestor accounts attestor.
                                                         // Required if attestor account is an intermediate entity
     };
 
     try {
 
         /* create and emit request */
-        const response = await attestation.createLeafAttestation('https://testardor.jelurida.com', params3);
+        const response = await attestation.createLeafAttestation("https://testardor.jelurida.com", params3);
 
-        /* the claim is now registered with the specified user data array to the attested account (Apu`s account) */
-        console.log('transaction id:', response.transactionId);
+        /* the claim is now registered with the specified user data array to the attested account (Oliver`s account) */
+        console.log("transaction id:", response.transactionId);
 
 
-        /* 
-        * Step 4: Forward the prepared user data array to the attested account holder (to Apu in this case)
-        * 
+        /*
+        * Step 4: Forward the prepared user data array to the attested account holder (to Oliver in this case)
+        *
         * <your code>
         */
 
     } catch (e) { /* error handling (see attestation-protocol-ts readme) */ }
-    
-}
+
+};
 
 claimRegistrationExample();
 ````
@@ -212,34 +215,33 @@ claimRegistrationExample();
 ### Verifiable Claim Creation
 
 ````typescript
-import { claim, CreateClaimParams, SetUserDataParams } from '@blobaa/claim-ts';
-import { data, SignDataParams } from '@blobaa/attestation-protocol-ts';
+import { claim, CreateClaimParams, SetUserDataParams } from "@blobaa/claim-ts";
+import { data, SignDataParams } from "@blobaa/attestation-protocol-ts";
 
 
 /* the prepared claim user data forwarded at the claim registration process (see Claim Registration) */
 const userData = [
-    { name: 'general:givenName',    value: 'apu',                   nonce: '2LqyL4UHmjNFd2UfykUud7niemEEyUBSfAYvTKMKX6ipM37G6Fk94AtCqlFHJOHr' },
-    { name: 'general:surName',      value: 'nahasapeemapetilon',    nonce: 'WNTZLpacUsMYYhfZdmsn2UwvAMay6zcDEgWwSdUYYzNNssvCkmyQVm6jd6ATfmTj' },
-    { name: 'general:nationality',  value: 'american',              nonce: 'ODUVizex9PEkFG63ZVI7h4Ae6qyj5tYK5iZ9bpOjpHXx1dJhkoLELNHvOOtHIQmq' },
-    { name: 'birth:date',           value: '04.02.1942',            nonce: '7LqA72Nqw1ONeQNCKUoub6GnnjrjqeX8wCS5UdjyfERMBIpvMbHOhY6FbNUvK3Hr' },
-    { name: 'birth:place',          value: 'rahmatpur',             nonce: '0rc71Das18a7blLvL2warMpiaw5Q7PsXq8EgEmFBqcDbsZFxmNshRHfbbxuEtEi1' },
-    { name: 'address:city',         value: 'springfield',           nonce: 'eBaiWBcw4AHaeI5pWcRasvaXJFaP0ApL1vOktdj30wH1fTSBvyHuEmGavtgfDwra' },
-    { name: 'address:zip',          value: '422442',                nonce: '9WMkXLFFo2xdjkZDJYyMtVUm0YwUtnkireFRBdvHjeldUpue8nYFf6lBojHzrlYB' },
-    { name: 'address:state',        value: 'illinois',              nonce: 'gI9dDBoOqT2Vt04Hmbi59tsZuvyCSLNfPRmlJxeU4IiZN4FdsIZJEvU9RNyNJa9i' },
-    { name: 'address:countryCode',  value: 'us',                    nonce: 'EnYg7EpDzOSPJM3QVfi0DtKmgwiYX4slAv5zNPmenSXiM5PSPAz03PfNI5C1XEDV' }
+    { name: "address:city",     value: "Cologne",       nonce: "fNQKzWwac2OTPKLOsdF98bMq4xcLTozIZIOk9EF0vzL2xlIBB6EgUw7vztkB5oJ6" },
+    { name: "address:country",  value: "Germany",       nonce: "IHCiJeCNitRqikxSxWUj3s0mOr8du3PCnkqaH7ooRkImZk7mKYKJc1xpzgx3Utc1" },
+    { name: "address:number",   value: "3",             nonce: "dIMctTViKw4j1VjFnD9DYOky2CBxDlIcfOVpVqHxbthMXeyXyTnuJMO8J7rBQhir" },
+    { name: "address:street",   value: "Kölner Weg",    nonce: "JlAIZKGGm9cBVd2ZZlO7eOnkVGROvV1B6gJCkEtjPGj2CLqcsfc9KJgbuobrCT0k" },
+    { name: "address:zip",      value: "11221",         nonce: "Ztqy9Eep6sw6ZMWRU9AoucyFa3B46vJ0PswIOBStsAtaJEMeFbdGkPlqMXBgM09T" },
+    { name: "person:firstName", value: "Oliver",        nonce: "Lz6yDcwEXgSWHsUt8YK1QCKBgb2eptTDif3xOks6KQx9BvKrZhXPqGqdrlIrZAGL" },
+    { name: "person:surName",   value: "Schmidt",       nonce: "1lRu8pwklj33nTsFo0tRYLb3fQ732zR12eiZz2xFy4WiiavBzqrChRQIw1Mu2qbB" },
+    { name: "person:birthDay",  value: "11.11.2000",    nonce: "1UB3TUC1yyeFnSkxJVhiqQBEzmeWt4lOQNUQ5kg0VIFbxYQPBgBgbE46ovvagtba" }
 ];
 
 
-const verifiableClaimCreationExample = () => {
-    
+const verifiableClaimCreationExample = (): void => {
+
     /*
      * Step 1: Select the user data to claim
      */
 
     const params1: CreateClaimParams = {
         userDataNames: [
-            'general:nationality',
-            'birth:date'
+            "address:country",
+            "person:birthDay"
         ]
     };
 
@@ -247,7 +249,7 @@ const verifiableClaimCreationExample = () => {
     /*
      * Step 2: Create the claim
      */
-    
+
     const params2: SetUserDataParams = {
         userData: userData
     };
@@ -256,28 +258,28 @@ const verifiableClaimCreationExample = () => {
     const claimObject = claim.createClaim(params1);
 
     /* the claim object bundles the selected user data along with claim verification information */
-    console.log('claim object:\n', claimObject, '\n\n');
-    
+    console.log("claim object:\n", claimObject, "\n\n");
+
 
     /*
      * Step 3: Sign the claim
      */
 
     const params3: SignDataParams = {
-        attestationContext: 'claimExample',
-        attestationPath: [                      // trust chain up to the root account
-            'ARDOR-WL4V-48P3-8RYH-6KFJ5',
-            'ARDOR-ZXVB-LCDL-DE2U-22LK6' 
+        attestationContext: "claimAuthentication",
+        attestationPath: [                          // trust chain up to the root account
+            "ARDOR-3ZKF-US3F-KGL7-GUEZE",
+            "ARDOR-47NS-P7AU-HZNN-84PW6"
         ],
-        payload: JSON.stringify(claimObject),   // stringified claim object
-        passphrase: 'chicken clerk liquid evil turtle duty like jeans beauty hundred swim sample'   // passphrase of claim creator account (Apu`s account)
+        payload: JSON.stringify(claimObject),       // stringified claim object
+        passphrase: "chicken clerk liquid evil turtle duty like jeans beauty hundred swim sample"   // passphrase of claim creator account (Oliver`s account)
     };
 
     const signedClaim = data.signData(params3, true);
 
     /* the signed claim object is now ready to be shared and verified */
-    console.log('signed claim object:\n', signedClaim);
-}
+    console.log("signed claim object:\n", signedClaim);
+};
 
 verifiableClaimCreationExample();
 ````
@@ -286,21 +288,21 @@ verifiableClaimCreationExample();
 ### Claim Verification
 
 ````typescript
-import { claim, VerifyClaimParams, ClaimObject } from '@blobaa/claim-ts'
-import { data, VerifySignedDataParams, SignedDataCheckParams, EntityCheckParams, Error, ErrorCode, SignedData } from '@blobaa/attestation-protocol-ts'
+import { claim, VerifyClaimParams, ClaimObject } from "@blobaa/claim-ts";
+import { data, VerifySignedDataParams, SignedDataCheckParams, EntityCheckParams, Error, ErrorCode, SignedData } from "@blobaa/attestation-protocol-ts";
 
 
 /* the signed claim created at the claim creation process (see Verifiable Claim Creation) */
-const signedClaim: SignedData = { 
-    payload: '{"userData":[{"name":"general:nationality","value":"american","nonce":"ODUVizex9PEkFG63ZVI7h4Ae6qyj5tYK5iZ9bpOjpHXx1dJhkoLELNHvOOtHIQmq"},{"name":"birth:date","value":"04.02.1942","nonce":"7LqA72Nqw1ONeQNCKUoub6GnnjrjqeX8wCS5UdjyfERMBIpvMbHOhY6FbNUvK3Hr"}],"hashes":{"leafHashes":["2062f74d687e4d8498116de9ea9a63f89b2b98b5442989c474088d27da618300","783fd6868618d40f86aec0d3468fb15a1aa6464d0bd34eea9478b8d3637becd8","b873d6e588d7642693b49cb55d93a53fd83afed045452b41c189876cae8c3e02","41c09ec51d6f373edf20559e929029a44e68fa80d3bafdb44e41d6551562c27f","c408700b01a0f7129ef44b2257dac882721cdb2795ed7a74698f5e2b12b13139","e68fcaaa6f8e5801bc1870ddd5c8e1f585cbf91ca481c2afd96404a4d6a11993","ae8934aca3733e086240141dee61233bdb8b06b7836f01c78e37ac089b3be7ab"],"rootHash":"9eb00fd0e01dbb903ce6512fe0c8612692b60724e0b2d7a41891f5666912153e"}}',
-    attestationContext: 'claimExample',
-    attestationPath: [ 'ARDOR-WL4V-48P3-8RYH-6KFJ5', 'ARDOR-ZXVB-LCDL-DE2U-22LK6' ],
-    creatorAccount: 'ARDOR-5HVX-MN8D-QNBH-4F6FE',
-    signature: '4f31stdpt2hm70iu8oer1tsq4lekck2rmt565f3eult4ocobp038komqp5m4ia83brd9ms9ntk3nfmm3bfsm988dtdncsel25qp0qsm7im5gddph5keiv7pqbimf6m8r3corvj3lgdonb998mj5tijomg81cdnmd'
+const signedClaim: SignedData = {
+  attestationContext: "claimAuthentication",
+  attestationPath: [ "ARDOR-3ZKF-US3F-KGL7-GUEZE", "ARDOR-47NS-P7AU-HZNN-84PW6" ],
+  creatorAccount: "ARDOR-5HVX-MN8D-QNBH-4F6FE",
+  payload: "{\"userData\":[{\"name\":\"address:country\",\"value\":\"Germany\",\"nonce\":\"IHCiJeCNitRqikxSxWUj3s0mOr8du3PCnkqaH7ooRkImZk7mKYKJc1xpzgx3Utc1\"},{\"name\":\"person:birthDay\",\"value\":\"11.11.2000\",\"nonce\":\"1UB3TUC1yyeFnSkxJVhiqQBEzmeWt4lOQNUQ5kg0VIFbxYQPBgBgbE46ovvagtba\"}],\"hashes\":{\"leafHashes\":[\"739e1eec28e2c8c551e730a9480f63a7b93bb9aa48bd54463fbf44aa2e54ce8d\",\"5837ac6ce233f9a3d75bd8e41d3febe5ec59f9590f665b625c9cc0a408711361\",\"1be4b90fa974e78300d0c6d36eb3cfb7ceadcd38790fd60938ef210deb732dd6\",\"33a0ad65e9d7183128aa1b24be9d7fc5f774fa940345844d5f6f3a3d54214b7e\",\"3e4b13d21def5c17f8896ae2903b90c9e3df0c33e784629d889da0e276488c78\",\"e9be2351d0969531cae85b6d697fc561fc3701014543b4e0412c75976aaba857\"],\"rootHash\":\"077e142468b011a454b62991a54e17b4b2408bcc5a73f7de87f188335280b17b\"}}",
+  signature: "4f31stdpt2hm70iu8oer1tsq4lekck2rmt565f3eult4ocob3a2juomqs5s2ah0439t762igiof08rcr84rumr6lkf8vt9cfhuqutimf840gl1memb6mndh70i3gg4eacqcl13nvcb8206urs8evh03cm6nj02m2"
 };
 
 
-const claimVerificationExample = async () => {
+const claimVerificationExample = async (): Promise<void> => {
 
     /*
      * Step 1: Create a claim check callback
@@ -309,29 +311,29 @@ const claimVerificationExample = async () => {
     let rootHash = "";
     let claimCreator = "";
 
-    const claimCheckCallback = (params: SignedDataCheckParams): boolean => {
-        
+    const claimCheckCallback = (params1: SignedDataCheckParams): boolean => {
+
         /* parse the claim object */
-        const claimObject: ClaimObject = JSON.parse(params.signedData.payload);
-        
-        
+        const claimObject: ClaimObject = JSON.parse(params1.signedData.payload);
+
+
         /* get user data */
-        console.log('claim user data:\n', claimObject.userData, '\n');
+        console.log("claim user data:\n", claimObject.userData, "\n");
 
         /* get the claim signature time */
-        console.log('claim signature time:', new Date(params.signatureTime), '\n\n');
+        console.log("claim signature time:", new Date(params1.signatureTime), "\n\n");
 
 
         /* verify the claim */
-        const params1: VerifyClaimParams = {
-            claimObject: claimObject
+        const params2: VerifyClaimParams = {
+            claimObject
         };
 
-        const isClaimValid = claim.verifyClaim(params1);
+        const isClaimValid = claim.verifyClaim(params2);
 
 
         /* store information for claim entity checks */
-        claimCreator = params.signedData.creatorAccount;
+        claimCreator = params1.signedData.creatorAccount;
         rootHash = claimObject.hashes.rootHash;
 
 
@@ -342,19 +344,20 @@ const claimVerificationExample = async () => {
     /*
      * Step 2: Create a claim entity check callback
      */
-    
+
     let isRootHashAttested = false;
-    
+
     const claimEntityCheckCallback = (entity: EntityCheckParams): boolean => {
 
         /* show trust chain entities */
-        console.log('account: ', entity.account);
-        console.log('payload: ', entity.payload);
-        console.log('entity : ', entity.entityType, '\n');
+        console.log("account: ", entity.account);
+        console.log("payload: ", entity.payload);
+        console.log("entity : ", entity.entityType, "\n");
 
 
         /* check if the root hash is attached to the claim creator account */
-        if(claimCreator === entity.account && rootHash === entity.payload) {
+        const parsedRootHash = JSON.parse(entity.payload).rootHash;
+        if (claimCreator === entity.account && rootHash === parsedRootHash) {
             isRootHashAttested = true;
         }
 
@@ -368,7 +371,7 @@ const claimVerificationExample = async () => {
      */
 
     const params: VerifySignedDataParams = {
-        trustedRootAccount: "ARDOR-ZXVB-LCDL-DE2U-22LK6", // the trust chain`s root account
+        trustedRootAccount: "ARDOR-47NS-P7AU-HZNN-84PW6", // the trust chain`s root account
         signedData: signedClaim,
         signedDataCheckCallback: claimCheckCallback,
         entityCheckCallback: claimEntityCheckCallback
@@ -378,28 +381,28 @@ const claimVerificationExample = async () => {
 
         /* create and emit request */
         const response = await data.verifySignedData("https://testardor.jelurida.com", params, true);
-        
-        /* Congratulation!!!, you have successfully finished the verification process. The claim is valid and attested */
-        console.log('\n', 'claim is ok :)');
-        console.log('verification information:\n', response);
 
-    } catch (e) { 
+        /* Congratulation!!!, you have successfully finished the verification process. The claim is valid and attested */
+        console.log("\n", "claim is ok :)");
+        console.log("verification information:\n", response);
+
+    } catch (e) {
 
         /* if your program reaches these lines, an error occurred and the verification finished without success. */
-        const error = e as Error
+        const error = e as Error;
 
-        switch(error.code) {
-            case ErrorCode.SIGNED_DATA_CALLBACK_ERROR: 
-                console.log('\n', 'claim is invalid :('); 
+        switch (error.code) {
+            case ErrorCode.SIGNED_DATA_CALLBACK_ERROR:
+                console.log("\n", "claim is invalid :(");
                 break;
-            case ErrorCode.ENTITY_CALLBACK_ERROR: 
-                console.log('\n', 'claim creator account is not attested or root hashes mismatch :('); 
+            case ErrorCode.ENTITY_CALLBACK_ERROR:
+                console.log("\n", "claim creator account is not attested or root hashes mismatch :(");
                 break;
             default:
                 console.log(error);
         }
     }
-}
+};
 
 claimVerificationExample();
 ````
