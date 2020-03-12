@@ -312,10 +312,14 @@ const claimVerificationExample = async (): Promise<void> => {
     let claimCreator = "";
 
     const claimCheckCallback = (params1: SignedDataCheckParams): boolean => {
-
+        let claimObject: ClaimObject
+       
         /* parse the claim object */
-        const claimObject: ClaimObject = JSON.parse(params1.signedData.payload);
-
+        try {
+            claimObject = JSON.parse(params1.signedData.payload);
+        } catch (e) {
+            return false;
+        } 
 
         /* get user data */
         console.log("claim user data:\n", claimObject.userData, "\n");
@@ -356,11 +360,19 @@ const claimVerificationExample = async (): Promise<void> => {
 
 
         /* check if the root hash is attached to the claim creator account */
-        const parsedRootHash = JSON.parse(entity.payload).rootHash;
-        if (claimCreator === entity.account && rootHash === parsedRootHash) {
-            isRootHashAttested = true;
-        }
+        if (!isRootHashAttested) {
+            let parsedRootHash: string;
 
+            try {
+                parsedRootHash = JSON.parse(entity.payload).rootHash;
+            } catch (e) {
+                return false;
+            }
+
+            if (claimCreator === entity.account && rootHash === parsedRootHash) {
+                isRootHashAttested = true;
+            }
+        }
 
         return isRootHashAttested; // verification process stops in case of an unattested root hash
     };
