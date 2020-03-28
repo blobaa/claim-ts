@@ -8,6 +8,8 @@ An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Cl
 
 - [Claim TypeScript](#claim-typescript)
   - [Installation](#installation)
+    - [Npmjs Registry](#npmjs-registry)
+    - [Github Registry](#github-registry)
   - [Development](#development)
   - [General](#general)
   - [APIs](#apis)
@@ -26,19 +28,32 @@ An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Cl
 
 ## Installation
 
-At the current state this library is published to the GitHub npm registry only.
-To use it as a dependency, create a *.npmrc* file in the same directory as your *package.json* and add the following line 
+This library is published to GitHub's and npmjs's npm registry.
+
+
+### Npmjs Registry
+
+````
+npm install @blobaa/claim-ts@<release version>
+````
+
+
+### Github Registry
+
+For using GitHub's registry, create a *.npmrc* file in the same directory as your *package.json* and add the following line 
 
 ````
 @blobaa:registry=https://npm.pkg.github.com/blobaa
 ```` 
 
 This tells npm to use the GitHub registry for scoped packages.
-You can now install the npm package via
+You can now install the package via
 
 ````
 npm install @blobaa/claim-ts@<release version>
 ````
+
+CAUTION: You need to [authenticate yourself](https://github.community/t5/GitHub-API-Development-and/Download-from-Github-Package-Registry-without-authentication/td-p/35255) to use the GitHub registry, even if it's a public available package.
 
 More information can be found at the [npm package](https://github.com/blobaa/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
 
