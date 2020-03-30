@@ -1,7 +1,13 @@
 {
   "name": "@blobaa/claim-ts",
   "version": "1.0.0",
-  "description": "",
+  "description": "An implementation of the Claim module written in TypeScript",
+  "author": "atz3n",
+  "license": "AGPL",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blobaa/claim-ts"
+  },
   "main": "dist/src/index.js",
   "scripts": {
     "test": "npm run test-browser && npm run test-node",
@@ -13,12 +19,6 @@
     "lint": "eslint ./ --ext .ts",
     "fix-lint": "eslint ./ --fix --ext .ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/blobaa/claim-ts.git"
-  },
-  "author": "atz3n",
-  "license": "AGPL",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.14",

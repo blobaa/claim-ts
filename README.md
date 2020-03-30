@@ -28,7 +28,7 @@ An implementation of the [Claim](https://docu.blobaa.dev) module written in [Typ
 
 ## Installation
 
-This library is published to GitHub's and npmjs's npm registry.
+This library is published on GitHub's and npmjs's npm registry.
 
 
 ### Npmjs Registry
@@ -38,6 +38,7 @@ npm install @blobaa/claim-ts
 ````
 
 See [npmjs package](https://www.npmjs.com/package/@blobaa/claim-ts).
+
 
 ### Github Registry
 
