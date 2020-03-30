@@ -18,7 +18,7 @@
     "url": "git+https://github.com/blobaa/claim-ts.git"
   },
   "author": "atz3n",
-  "license": "ISC",
+  "license": "AGPL",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.14",

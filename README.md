@@ -1,6 +1,6 @@
 # Claim TypeScript
 
-An implementation of the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module written in [TypeScript](https://www.typescriptlang.org).
+An implementation of the [Claim](https://docu.blobaa.dev) module written in [TypeScript](https://www.typescriptlang.org).
 
 
 <details><summary><i>Table of Contents</i></summary>
@@ -34,9 +34,10 @@ This library is published to GitHub's and npmjs's npm registry.
 ### Npmjs Registry
 
 ````
-npm install @blobaa/claim-ts@<release version>
+npm install @blobaa/claim-ts
 ````
 
+See [npmjs package](https://www.npmjs.com/package/@blobaa/claim-ts).
 
 ### Github Registry
 
@@ -46,16 +47,17 @@ For using GitHub's registry, create a *.npmrc* file in the same directory as you
 @blobaa:registry=https://npm.pkg.github.com/blobaa
 ```` 
 
-This tells npm to use the GitHub registry for scoped packages.
+This tells npm to use the GitHub registry for @blobaa scoped packages. More information about multiple registry usage can be found in [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851).
+
 You can now install the package via
 
 ````
-npm install @blobaa/claim-ts@<release version>
+npm install @blobaa/claim-ts
 ````
 
-CAUTION: You need to [authenticate yourself](https://github.community/t5/GitHub-API-Development-and/Download-from-Github-Package-Registry-without-authentication/td-p/35255) to use the GitHub registry, even if it's a public available package.
+See [GitHub package](https://github.com/blobaa/claim-ts/packages/93052).
 
-More information can be found at the [npm package](https://github.com/blobaa/claim-ts/packages/93052) description and [this medium post](https://medium.com/@crysfel/using-different-registries-in-yarn-and-npm-766541d6f851) about multiple registry usage.
+CAUTION: You need to [authenticate yourself](https://github.community/t5/GitHub-API-Development-and/Download-from-Github-Package-Registry-without-authentication/td-p/35255) to use the GitHub registry, even if it's a public available package.
 
 
 ## Development
@@ -97,7 +99,7 @@ npm test
 
 ## General
 
-This library implements the [Claim](https://github.com/blobaa/documentation/wiki/Claim) module and must therefore be used in conjunction with the [Attestation Protocol](https://github.com/blobaa/documentation/wiki/Attestation-Protocol) [implementation](https://github.com/blobaa/attestation-protocol-ts) to realise verifiable claim based authentication.
+This library implements the [Claim](https://docu.blobaa.dev/Claim.html) module and must therefore be used in conjunction with the [Attestation Protocol](https://docu.blobaa.dev/Attestation-Protocol.html) [implementation](https://github.com/blobaa/attestation-protocol-ts) to enable verifiable claim based authentication.
 
 
 ## APIs
