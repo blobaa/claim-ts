@@ -1,6 +1,6 @@
 # Claim TypeScript
 
-An implementation of the [Claim](https://docu.blobaa.dev) module written in [TypeScript](https://www.typescriptlang.org).
+An implementation of the [Claim](https://docu.blobaa.dev/claim) module written in [TypeScript](https://www.typescriptlang.org).
 
 
 <details><summary><i>Table of Contents</i></summary>
@@ -100,7 +100,7 @@ npm test
 
 ## General
 
-This library implements the [Claim](https://docu.blobaa.dev/Claim.html) module and must therefore be used in conjunction with the [Attestation Protocol](https://docu.blobaa.dev/Attestation-Protocol.html) [implementation](https://github.com/blobaa/attestation-protocol-ts) to enable verifiable claim based authentication.
+This library implements the [Claim](https://docu.blobaa.dev/claim) module and must therefore be used in conjunction with the [Attestation Protocol](https://docu.blobaa.dev/attestation-protocol) [implementation](https://github.com/blobaa/attestation-protocol-ts) to enable verifiable claim based authentication.
 
 
 ## APIs
